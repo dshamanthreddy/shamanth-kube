@@ -2,5 +2,5 @@
 Kubernetes templates
 
 Netflix oss kubernetes
-k8s setup
-templates
+#k8s setup
+#templates
