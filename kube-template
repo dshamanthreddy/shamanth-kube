@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: name-deploy
+  labels:
+    app: nginx
+    rel: 18.04.100
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+      rel: 18.04.100
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+        env:
+        - name: EUREKA_URL
+          value: "34.238.121.190:31197"
+        resources:
+          requests:
+            cpu: 4
+            memory: "256M"
+          limits:
+            cpu: 4
+            memory: "256M"
+
+
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    nodePort: 30000
+  selector:
+    app: nginx
+
+
+
+
+
+

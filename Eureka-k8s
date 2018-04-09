@@ -1,0 +1,83 @@
+
+
+kubectl run eureka-server --replicas=1 --labels="run=eureka-server" --image=luizkowalski/eureka-server --port=8761
+
+kubectl expose deployment eureka-server --type=LoadBalancer --name eureka-server
+
+Approch-1
+
+Bootstrap.yaml
+
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_URL}/eureka/
+  instance:
+    metadataMap:
+      instanceId: ${spring.application.name}:${random.int}
+    preferIpAddress: true
+
+
+Dockerfile
+
+FROM java:8-alpine
+VOLUME /hystrix-dashboard
+ADD target/hystrix-0.0.1-SNAPSHOT.jar app.jar
+RUN sh -c 'touch app.jar'
+EXPOSE 8090
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=docker","-Deureka.client.serviceUrl.defaultZone=http://${EUREKA_URL}/eureka/","-jar","/app.jar"]
+
+
+Deployment steps
+
+kubectl run hystrix --replicas=1 --labels="run=hystrix" --image=shamanth/hystrix  --port=8090 --env="EUREKA_URL=34.238.121.190:31197"
+
+kubectl expose deployment hystrix --type=NodePort --name hystrix-dashboard
+
+
+#testing ep
+
+kubectl run employee-producer --replicas=1 --labels="run=employee-producer" --image=shamanth/employee-producer --port=8090 --env="EUREKA_URL=34.238.121.190:31197"
+
+
+
+
+
+Approch-2
+
+Bootstrap.yaml
+
+---
+spring:
+  profiles: docker
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://34.239.48.176:31072/eureka
+  instance:
+    metadataMap:
+      instanceId: ${spring.application.name}:${random.int}
+    preferIpAddress: true
+
+
+Dockerfile
+
+FROM java:8-alpine
+VOLUME /employee-producer
+ADD target/employee-producer-0.0.1-SNAPSHOT.jar app.jar
+RUN sh -c 'touch app.jar'
+EXPOSE 8090
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=docker","-jar","/app.jar"]
+
+
+Deployment steps
+
+kubectl run employee-producer --replicas=1 --labels="run=employee-producer" --image=shamanth/employee-producer --port=8090
+
+
+kubectl expose deployment employee-producer --type=NodePort --name employee-producer
+

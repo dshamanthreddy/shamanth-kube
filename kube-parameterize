@@ -1,0 +1,94 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{labelAppName}}
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+      metadata:
+        labels:
+            # Convention in SC-Pipelines
+            name: {{appName}}
+            version: {{version}}
+      spec:
+        containers:
+        - name: {{containerName}}
+          image: {{dockerOrg}}/{{appName}}:{{version}}
+          ports:
+          - containerPort: 8080
+          env:
+          - name: PORT
+            value: "8080"
+          - name: SYSTEM_PROPS # additional options to be passed to the running process
+            value: "{{systemProps}}"
+          - name: MYSQL_DB_USER
+            valueFrom:
+              secretKeyRef:
+                # Naming convention of secrets in sc-pipelines
+                name: mysql-{{appName}}
+                key: username
+          - name: MYSQL_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-{{appName}}
+                key: password
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------
+
+
+
+
+---
+  apiVersion: extensions/v1beta1
+  kind: Deployment
+  metadata:
+    name: "{{ kubernetes_deployment_name }}"
+  spec:
+    replicas: "{{ kubernetes_deployment_replicas }}"
+    minReadySeconds: 0
+    template:
+      metadata:
+        labels:
+          app: "{{ kubernetes_deployment_app_name }}"
+      spec:
+        containers:
+          - name: "{{ kubernetes_deployment_app_name }}"
+            image: "{{ kubernetes_deployment_image }}:{{ kubernetes_deployment_image_tag }}"
+            ports:
+              - name: liveness-port
+                containerPort: "{{ kubernetes_deployment_container_port }}"
+            env:
+              - name: ENV
+                value: "{{ env }}"
+        imagePullSecrets:
+          - name: rancher-pull-secret # This name must match what is setup in the kubernetes-quayio role
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+
