@@ -68,3 +68,4 @@ $ kubectl get svc  -o wide --show-labels --all-namespaces
 kubeadm generate token
 kubeadm token create xxxxxxxXXX --ttl 3h --print-join-command
 kubectl scale --replicas=3
+kubectl rollout history deployments
