@@ -2,6 +2,9 @@ apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment #service,pod,replication controller 
 metadata:
   name: sise # name of that
+  namespace: any_namespace_created
+  labels:
+    key: value
 spec:
   replicas: 2   #no of to scale
   selector:
