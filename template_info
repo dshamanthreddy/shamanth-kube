@@ -4,6 +4,9 @@ metadata:
   name: sise # name of that
 spec:
   replicas: 2   #no of to scale
+  selector:
+    matchLabels:
+      app: sise
   template:
     metadata:
       labels:
