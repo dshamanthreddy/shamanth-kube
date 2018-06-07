@@ -52,7 +52,9 @@ subjects:
   
   
   
- ##--Horizontal Pod Autoscaler(https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#step-two-create-horizontal-pod-autoscaler )
+ ##--Horizontal Pod Autoscaler(
+ (https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#step-two-create-horizontal-pod-autoscaler
+ https://blog.powerupcloud.com/autoscaling-based-on-cpu-memory-in-kubernetes-part-ii-fe2e495bddd4  )
  $ kubectl autoscale deployment $name --cpu-percent=50 --min=1 --max=10  
  $ kubectl get hpa
  
