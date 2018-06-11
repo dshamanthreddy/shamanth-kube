@@ -1,0 +1,17 @@
+RBAC
+
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+
+
+Yaml or TPL for helpers
+
+
+
+Helm Create name
+helm install name
+Helm ls 
+helm delete name (deployed to deleted)
+helm delete name --purge
+helm package name
