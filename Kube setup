@@ -1,4 +1,4 @@
-Kube setup
+Kube Setup
 
 
 #kube AMI
@@ -46,7 +46,26 @@ subjects:
   namespace: kube-system
   
   
-  
+properties you can set for a Container:
+
+name
+image
+command
+args
+workingDir
+ports
+env
+resources
+volumeMounts
+livenessProbe
+readinessProbe
+livecycle
+terminationMessagePath
+imagePullPolicy
+securityContext
+stdin
+stdinOnce
+tty
   
   
   
