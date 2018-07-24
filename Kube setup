@@ -97,6 +97,9 @@ $ kubectl get nodes
 $ kubectl get componentstatuses
 $ kubectl get pods -o wide --show-labels --all-namespaces
 $ kubectl get svc  -o wide --show-labels --all-namespaces
+kubectl config get-contexts
+kubectl config view
+kubectl get rolebindings
 
 
 Logs
