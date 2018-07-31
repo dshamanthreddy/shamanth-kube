@@ -1,5 +1,6 @@
 Kube Setup
 
+swapoff -a 
 
 #kube AMI
 
