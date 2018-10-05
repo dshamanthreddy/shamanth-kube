@@ -130,3 +130,7 @@ helm inspect chart  #To see what is inside
 
 
 
+*****************************kube links*************************************
+
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/      -----------All v1.12 keywords
+https://kubernetes.io/docs/tasks/federation/set-up-cluster-federation-kubefed/   ---------------Set up Cluster Federation with Kubefed
