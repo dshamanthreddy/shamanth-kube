@@ -113,7 +113,8 @@ Worker Nodes
 /var/log/kube-proxy.log - Kube Proxy, responsible for service load balancing
 
 
-
+**************************Troubleshotting**************
+journalctl -u etcd
 
 
 
@@ -134,3 +135,6 @@ helm inspect chart  #To see what is inside
 
 https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/      -----------All v1.12 keywords
 https://kubernetes.io/docs/tasks/federation/set-up-cluster-federation-kubefed/   ---------------Set up Cluster Federation with Kubefed
+
+***Etcd Setup**** v1.10
+https://v1-10.docs.kubernetes.io/docs/setup/independent/high-availability/
