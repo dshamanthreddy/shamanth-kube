@@ -85,7 +85,7 @@ tty
   
  Kubectl Commands
  
-
+kubectl version  --short | grep -i server
 kubeadm generate token
 kubeadm token create xxxxxxxXXX --ttl 3h --print-join-command
 kubectl scale --replicas=3
