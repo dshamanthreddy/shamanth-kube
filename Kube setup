@@ -127,7 +127,16 @@ helm inspect chart  #To see what is inside
 
 
 
+****************************etcd backup**************************
+etcdctl  --help
+export ETCDCTL_API=3
+etcdctl snapshot --endpoints https://10.119.44.168:2379 
+--cacert=/etc/kubernetes/pki/etcd/ca.pem 
+--cert=/etc/kubernetes/pki/etcd/client.pem 
+--key=/etc/kubernetes/pki/etcd/client-key.pem 
+save /var/sp.db
 
+etcdctl --write-out=table snapshot status /var/sp.db
 
 
 
