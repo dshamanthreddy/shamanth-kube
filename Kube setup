@@ -125,6 +125,13 @@ Helm Status name
 helm search
 helm inspect chart  #To see what is inside
 
+******************************sorting*********************************
+kubectl get pods -l group=cpu-test #using label key value
+
+kubectl get pv -o json
+kubectl get pv --sort-by='{spec.capacity.storage}'
+
+
 
 
 ****************************etcd backup**************************
