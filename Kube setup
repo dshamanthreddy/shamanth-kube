@@ -138,6 +138,10 @@ save /var/sp.db
 
 etcdctl --write-out=table snapshot status /var/sp.db
 
+*********************************DNS*********************************
+
+kubectl exec -ti busybox -- nslookup kubernetes.default
+
 
 
 *****************************kube links*************************************
