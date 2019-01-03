@@ -152,6 +152,16 @@ etcdctl --write-out=table snapshot status /var/sp.db
 kubectl exec -ti busybox -- nslookup kubernetes.default
 
 
+******************************rollout deployments*************************
+kubectl rollout status deployment.v1.apps/nginx-deployment
+kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
+kubectl rollout status deployment.v1.apps/nginx-deployment
+kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.7.9 --record=true
+kubectl rollout status deployment.v1.apps/nginx-deployment
+kubectl rollout history deployment.v1.apps/nginx-deployment
+kubectl rollout history deployment.v1.apps/nginx-deployment --revision=2
+kubectl rollout history deployment.v1.apps/nginx-deployment
+
 
 *****************************kube links*************************************
 
