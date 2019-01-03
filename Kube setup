@@ -131,7 +131,9 @@ kubectl get pods -l group=cpu-test #using label key value
 kubectl get pv -o json
 kubectl get pv --sort-by='{spec.capacity.storage}'
 
-
+kubectl top pods -n cpu-test -l group=cpu-test
+kubectl get pods -o wide
+kubectl get pods -l group=cpu-test
 
 
 ****************************etcd backup**************************
