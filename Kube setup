@@ -153,15 +153,62 @@ kubectl exec -ti busybox -- nslookup kubernetes.default
 
 
 ******************************rollout deployments*************************
-kubectl rollout status deployment.v1.apps/nginx-deployment
+
 kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record=true
-kubectl rollout status deployment.v1.apps/nginx-deployment
 kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.7.9 --record=true
-kubectl rollout status deployment.v1.apps/nginx-deployment
 kubectl rollout history deployment.v1.apps/nginx-deployment
 kubectl rollout history deployment.v1.apps/nginx-deployment --revision=2
-kubectl rollout history deployment.v1.apps/nginx-deployment
 
+**************************************************************DNS Pod & SVC*******************
+# create mydeployment
+cat <<EOF | kubectl create -f -
+apiVersion: apps/v1
+kind: Deploy
+metadata:
+  labels:
+    app: deploy
+  name: deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy
+  template:
+    metadata:
+      labels:
+        app: deploy
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+EOF
+# create myservice
+kubectl expose deployment mydeployment --port=80 --target-port=80 --name=myservice
+# create busybox:1.28
+cat <<EOF | kubectl create -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox
+  name: busybox
+spec:
+  containers:
+  - image: busybox:1.28
+    name: busybox
+    command:
+    - sh
+    - -c
+    - "while true; do sleep 3600; done"
+EOF
+# get dns for service
+kubectl exec busybox -it -- nslookup myservice.default.svc
+# get dns for pod
+# kubectl describe pod/mydeployment-<...> | grep -i ip   => return IP:   10.244.2.8
+kubectl exec busybox -it -- nslookup 10-244-2-8.default.pod
 
 *****************************kube links*************************************
 
