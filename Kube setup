@@ -217,3 +217,5 @@ https://kubernetes.io/docs/tasks/federation/set-up-cluster-federation-kubefed/  
 
 ***Etcd Setup**** v1.10
 https://v1-10.docs.kubernetes.io/docs/setup/independent/high-availability/
+
+stty erase "^?"
