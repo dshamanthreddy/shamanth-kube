@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+
+"""
+"""
+
+import sys
+import json
+
+data1_hosts = []
+data2_hosts = []
+
+
+#
+# start from here
+#
+
+if sys.argv is None or len( sys.argv ) != 3:
+    errorlog( "ERROR: the arguments are insufficient, abort\n" )
+    exit( -1 )
+
+json_data1_file = sys.argv[ 1 ]
+json_data2_file = sys.argv[ 2 ]
+
+with open( json_data1_file ) as json_file:
+    data = json.load( json_file )
+
+if data is None or data.get( "info" ) is None or len( data.get( "info" ) ) == 0:
+    print( "ERROR: unable to parse Json data1, about" )
+    sys.exit( 1 )
+
+for eachList in data.get( "info" ):
+    if eachList is None or \
+       eachList.get( "hostname" ) is None or len( eachList.get( "hostname" ) ) == 0:
+        continue
+
+    data1_hosts.append( eachList.get( "hostname" ) )
+
+with open( json_data2_file ) as json_file:
+    data = json.load( json_file )
+
+if data is None or data.get( "hits" ) is None or \
+   data.get( "hits" ).get( "hits" ) is None or len( data.get( "hits" ).get( "hits" ) ) == 0:
+    print( "ERROR: unable to parse Json data2, about" )
+    sys.exit( 1 )
+
+for eachList in data.get( "hits" ).get( "hits" ):
+    if eachList is None or eachList.get( "_scource" ) is None or \
+       eachList.get( "_scource" ).get( "hostname" ) is None or len( eachList.get( "_scource" ).get( "hostname" ) ) == 0 or \
+       eachList.get( "_scource" ).get( "pid" ) is None or len( eachList.get( "_scource" ).get( "pid" ) ) == 0:
+        continue
+
+    pid = int( eachList.get( "_scource" ).get( "pid" ) )
+
+    if pid > -1:
+        data2_hosts.append( eachList.get( "_scource" ).get( "hostname" ) )
+
+#print( str( data1_hosts ) )
+#print( str( data2_hosts ) )
+
+hosts = list( set( data1_hosts ) - set( data2_hosts ) )
+
+if hosts is not None and len( hosts ) > 0:
+    for eachHost in hosts:
+        print( eachHost )
