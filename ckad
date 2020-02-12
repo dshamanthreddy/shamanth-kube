@@ -1,0 +1,21 @@
+kubectl create ns ckad
+kubectl run busybox --image=busybox --restart=Never -n=ckad
+
+kubectl run nginx --image=nginx --dry-run -o yaml # Deployment
+kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml # Pod
+kubectl run busybox --image=busybox --restart=OnFailure --dry-run -o yaml -- /bin/sh -c 'echo Hello world!' # Job
+kubectl run busybox --image=busybox --restart=OnFailure --schedule="0/5 * * * ?" --dry-run -o yaml -- /bin/sh -c 'echo Hello world!' # CronJob
+
+kubectl run nginx --image=nginx --dry-run -o yaml > pod.yaml
+
+Create an nginx pod with environment variable
+kubectl run nginx --image=nginx --restart=Never --env=MY_VAR=MY_VAL
+
+# B2
+kubectl run backend-experiment  --image=hashicorp/http-echo -- -text="hello backend-experiment"
+# B1
+kubectl run backend --image=hashicorp/http-echo -- -text="hello backend"
+
+kubectl expose deploy backend-experiment --port=80 --target-port=5678
+kubectl expose deploy backend --port=80 --target-port=5678
+
